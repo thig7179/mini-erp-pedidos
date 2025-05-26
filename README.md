@@ -6,6 +6,7 @@ Este é um mini sistema ERP desenvolvido em PHP com MySQL, que permite o gerenci
 - Estoque por variação
 - Cupons com validade e valor mínimo
 - Carrinho de compras com regras de frete
+- Webhook de integração de pedidos externos
 
 ---
 
@@ -28,6 +29,7 @@ Este é um mini sistema ERP desenvolvido em PHP com MySQL, que permite o gerenci
 ├── models/                  # Lógica de dados e queries SQL
 ├── views/                   # Telas PHP (produtos, carrinho, estoque, cupons)
 ├── banco.sql                # Script SQL para criar e popular o banco de dados
+├── webhook/                 # Endpoint para receber atualizações de pedidos
 └── index.php                # Redireciona para a tela inicial (produtos.php)
 ```
 
@@ -87,7 +89,30 @@ if ($mysqli->connect_error) {
 - Aplicação de cupons com validade e valor mínimo
 - Máscara de moeda nos campos de preço e valores
 - Consulta de endereço via CEP (https://viacep.com.br)
-- Webhook para integração externa de pedidos (não incluído nesta versão pública)
+- Webhook para integração externa de pedidos
+
+---
+
+## 🔁 Webhook
+
+Você pode integrar sistemas externos usando o endpoint:
+
+```
+POST /webhook.php
+```
+
+### Exemplo de payload:
+
+```json
+{
+  "pedido_id": 123,
+  "status": "cancelado"
+}
+```
+
+### Regras:
+- Se `status` for `cancelado`, o pedido será removido
+- Se for qualquer outro, o status será atualizado
 
 ---
 
